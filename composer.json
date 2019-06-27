@@ -1,9 +1,9 @@
 {
     "name": "wackystudio/forge-ssh-assistant",
-    "description": "A tool to fetch you Laravel Forge servers to easily SSH into them ",
+    "description": "A CLI tool for Laravel Forge users for easier SSH access",
     "keywords": ["ssh", "laravel forge", "laravel", "laravel zero", "console", "cli"],
     "homepage": "https://wackystudio.com",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "support": {
         "issues": "https://github.com/WackyStudio/ForgeSSHAssistant/issues",
