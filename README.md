@@ -1,6 +1,6 @@
 ![Logo](logo.jpg)
 
-Forge SSH Assistant is a CLI tool built with [Laravel Zero](https://laravel-zero.com) that fetches your Laravel Forge 
+Forge SSH Assistant is a CLI tool built with [Laravel Zero](https://laravel-zero.com) for macOS and Linux that fetches your Laravel Forge 
 servers and lists these in a menu so you can easily choose which server you want to connect to using SSH.
 
 With Forge SSH Assistant you don't have to open Laravel Forge to check the IP address of the server(s) you want to work with. 
@@ -26,7 +26,6 @@ The Composer global bin directory is placed differently based on your operation 
 and some common locations are:
 * macOS: `$HOME/.composer/vendor/bin`
 * GNU / Linux Distributions: `$HOME/.config/composer/vendor/bin`
-* Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
 
 After the installation you will be able to run Forge SSH Assistant through the `forge` command.
 
