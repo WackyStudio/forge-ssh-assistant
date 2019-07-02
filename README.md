@@ -1,5 +1,7 @@
 ![Logo](logo.jpg)
 
+[![Total Downloads](https://img.shields.io/packagist/dt/wackystudio/forge-ssh-assistant.svg?style=flat-square)](https://packagist.org/packages/wackystudio/forge-ssh-assistant)
+
 Forge SSH Assistant is a CLI tool built with [Laravel Zero](https://laravel-zero.com) for macOS and Linux that fetches your Laravel Forge 
 servers and lists these in a menu so you can easily choose which server you want to connect to using SSH.
 
