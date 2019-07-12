@@ -5,6 +5,7 @@ namespace App\Commands;
 use App\Forge;
 use App\TokenHandler;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Arr;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Process\Process;
 use TheSeer\Tokenizer\Token;
@@ -36,6 +37,12 @@ class Ssh extends Command
      */
     protected $description = 'SSH into your servers from a list';
 
+    /**
+     * List of servers accessible with saved tokens
+     * @var array
+     */
+    private $servers = [];
+
 
     public function __construct(Forge $forge, TokenHandler $tokenHandler)
     {
@@ -51,9 +58,9 @@ class Ssh extends Command
      */
     public function handle()
     {
-        $this->getToken();
+        $this->fetchServersOfTokens();
 
-        $ip = $this->menu('Forge SSH Assistant by Wacky Studio 🤵', $this->forge->listServerNames())
+        $ip = $this->menu('Forge SSH Assistant by Wacky Studio 🤵', $this->servers)
             ->setTitleSeparator('=')
             ->setBackgroundColour('black')
             ->setForegroundColour('white')
@@ -62,7 +69,7 @@ class Ssh extends Command
             ->setSelectedMarker('➡  ')
             ->open();
 
-        if($ip === null){
+        if ($ip === null) {
             $this->info('Good bye!');
             exit(0);
         }
@@ -70,14 +77,34 @@ class Ssh extends Command
         $this->handle();
     }
 
-    public function getToken(): void
+    public function getTokens()
     {
-        $token = $this->tokenHandler->readToken();
-        if (empty($token)) {
+        $tokens = $this->tokenHandler->readToken();
+        if (empty($tokens)) {
             $this->error('No Laravel Forge token has been added!');
             exit(1);
         }
-        $this->forge->fetchServers($token);
+
+        return $tokens;
+
+        // $this->forge->fetchServers($tokens);
+    }
+
+    public function fetchServersOfTokens()
+    {
+
+        foreach ($this->getTokens() as $token_name => $token) {
+            $this->forge->fetchServers($token);
+            $servers_of_token = $this->forge->listServerNames();
+
+            foreach ($servers_of_token as $ip => $server_name) {
+                $servers_of_token[$ip] = "$server_name ({$token_name})";
+            }
+
+            array_push($this->servers, $servers_of_token);
+        }
+
+        $this->servers = Arr::collapse($this->servers);
     }
 
     /**
@@ -85,7 +112,7 @@ class Ssh extends Command
      */
     public function runSSH($ip): void
     {
-        $this->info("Setting up SSH connection to {$this->forge->listServerNames()[$ip]}");
+        $this->info("Setting up SSH connection to {$this->servers[$ip]}");
         $process = new Process("ssh forge@{$ip}");
         $process->setTty(Process::isTtySupported());
         $process->setTimeout(null);
@@ -93,6 +120,4 @@ class Ssh extends Command
         $process->run();
         $this->info('SSH Connection closed - Bye!');
     }
-
-
 }
