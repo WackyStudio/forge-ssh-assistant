@@ -13,7 +13,7 @@ class AddForgeToken extends Command
      *
      * @var string
      */
-    protected $signature = 'token:add {token}';
+    protected $signature = 'token:add {name} {token}';
 
     /**
      * The description of the command.
@@ -41,12 +41,19 @@ class AddForgeToken extends Command
     public function handle()
     {
         $token = $this->argument('token');
-        if(empty($token)){
+        $name = $this->argument('name');
+
+        if (empty($token)) {
             $this->error('ERROR: No token given');
             exit(1);
         }
-        $this->tokenHandler->addToken($token);
+
+        if (empty($name)) {
+            $this->error('ERROR: No name given for the token');
+            exit(1);
+        }
+        
+        $this->tokenHandler->addToken($name, $token);
         $this->info('The token has been added');
     }
-
 }
