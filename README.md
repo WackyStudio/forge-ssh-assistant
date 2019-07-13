@@ -32,7 +32,7 @@ and some common locations are:
 After the installation you will be able to run Forge SSH Assistant through the `forge` command.
 
 ### Adding a token
-To be able to interact with your Laravel Forge account, Forge SSH Assistant needs a valid Laravel Forge token.
+To be able to interact with one or more Laravel Forge account(s), Forge SSH Assistant needs a valid Laravel Forge token together with a name of the account the token belongs to.
 
 To create a token you'll need to head into your account settings on Laravel Forge and choose **API** in the menu.
 
@@ -42,10 +42,10 @@ such as `Office` or `MacBook Pro`
 
 An overlay will open with the actual token, which you should copy. Make sure that you copy everything.
 
-Go into your terminal and run the following command and replace the ´<the-token-copied-from-laravel-forge>´ 
+Go into your terminal and run the following command and replace the `<the-name-of-the-token>` with the name of your token or the Forge account this belongs to and replace  `<the-token-copied-from-laravel-forge>`
 with the actual token you copied from Laravel Forge:
 ```bash
-forge token:add <the-token-copied-from-laravel-forge>
+forge token:add <the-name-of-the-token> <the-token-copied-from-laravel-forge>
 ```
 
 To test that everything works, run the following command:
@@ -53,6 +53,7 @@ To test that everything works, run the following command:
 forge ssh
 ```
 You should now be able to see the servers you have provisioned through Laravel Forge and select these to SSH into them.
+
 ## License
 
 Forge SSH Assistant is an open-source software licensed 
