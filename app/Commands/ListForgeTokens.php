@@ -6,21 +6,21 @@ use App\TokenHandler;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
-class AddForgeToken extends Command
+class ListForgeTokens extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'token:add {name} {token}';
+    protected $signature = 'token:list';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Add a Laravel Forge token <comment>(For communication with your Laravel Forge account)</comment>';
+    protected $description = 'List the Laravel Forge tokens that are curently saved to the config file.';
 
     /**
      * @var TokenHandler
@@ -40,20 +40,16 @@ class AddForgeToken extends Command
      */
     public function handle()
     {
-        $token = $this->argument('token');
-        $name = $this->argument('name');
+        $tokens = $this->tokenHandler->readToken();
 
-        if (empty($token)) {
-            $this->error('ERROR: No token given');
+        if (empty($tokens)) {
+            $this->info('There is no token saved to the config file at the moment');
             exit(1);
         }
 
-        if (empty($name)) {
-            $this->error('ERROR: No name given for the token');
-            exit(1);
+        $this->line("");
+        foreach ($tokens as $name => $token) {
+            $this->info($name.' : '.$token);
         }
-        
-        $this->tokenHandler->addToken($name, $token);
-        $this->info('The token has been added');
     }
 }
