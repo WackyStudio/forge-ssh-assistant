@@ -7,6 +7,9 @@ use App\TokenHandler;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Arr;
 use LaravelZero\Framework\Commands\Command;
+use NunoMaduro\LaravelConsoleMenu\Menu;
+use PhpSchool\CliMenu\Builder\CliMenuBuilder;
+use PhpSchool\CliMenu\Builder\SplitItemBuilder;
 use Symfony\Component\Process\Process;
 use TheSeer\Tokenizer\Token;
 
@@ -60,19 +63,36 @@ class Ssh extends Command
     {
         $this->fetchServersOfTokens();
 
-        $ip = $this->menu('Forge SSH Assistant by Wacky Studio 🤵', $this->servers)
-            ->setTitleSeparator('=')
+        /** @var Menu $menu */
+        $menu = $this->menu('Forge SSH Assistant by Wacky Studio ')
+            ->setTitleSeparator('_')
             ->setBackgroundColour('black')
             ->setForegroundColour('white')
-            ->addLineBreak('_', 1)
             ->setUnselectedMarker('   ')
-            ->setSelectedMarker('➡  ')
+            ->setSelectedMarker('➡  '):
+
+        foreach ($this->servers as $name => $servers) {
+            if ($name !== array_key_first($this->servers)) {
+                $menu->addStaticItem('');
+            }
+
+            $menu->addStaticItem('   ' . ucfirst($name) . ' servers:');
+            $menu->addLineBreak('_', 1);
+            $menu->addStaticItem('');
+
+            $menu->addOptions($servers);
+            $menu->addLineBreak('_', 1);
+        }
+
+        $ip = $menu->addStaticItem('')
             ->open();
+
 
         if ($ip === null) {
             $this->info('Good bye!');
             exit(0);
         }
+
         $this->runSSH($ip);
         $this->handle();
     }
@@ -86,25 +106,23 @@ class Ssh extends Command
         }
 
         return $tokens;
-
-        // $this->forge->fetchServers($tokens);
     }
 
     public function fetchServersOfTokens()
     {
 
-        foreach ($this->getTokens() as $token_name => $token) {
+        foreach ($this->getTokens() as $tokenName => $token) {
             $this->forge->fetchServers($token);
-            $servers_of_token = $this->forge->listServerNames();
+            $servers = $this->forge->listServerNames();
 
-            foreach ($servers_of_token as $ip => $server_name) {
-                $servers_of_token[$ip] = "$server_name ({$token_name})";
+            foreach ($servers as $ip => $serverName) {
+                $servers[$ip] = $serverName;
             }
 
-            array_push($this->servers, $servers_of_token);
+            $this->servers[$tokenName] = $servers;
         }
 
-        $this->servers = Arr::collapse($this->servers);
+        ksort($this->servers);
     }
 
     /**
@@ -112,7 +130,9 @@ class Ssh extends Command
      */
     public function runSSH($ip): void
     {
-        $this->info("Setting up SSH connection to {$this->servers[$ip]}");
+        $connectTo = Arr::collapse($this->servers)[$ip];
+
+        $this->info("Setting up SSH connection to {$connectTo}");
         $process = new Process("ssh forge@{$ip}");
         $process->setTty(Process::isTtySupported());
         $process->setTimeout(null);
