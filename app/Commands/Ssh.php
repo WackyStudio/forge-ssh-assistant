@@ -69,7 +69,7 @@ class Ssh extends Command
             ->setBackgroundColour('black')
             ->setForegroundColour('white')
             ->setUnselectedMarker('   ')
-            ->setSelectedMarker('➡  '):
+            ->setSelectedMarker('➡  ');
 
         foreach ($this->servers as $name => $servers) {
             if ($name !== array_key_first($this->servers)) {
