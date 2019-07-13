@@ -66,7 +66,6 @@ class TokenHandler
         }
         if (!Storage::has('.config/fssh/config.json')) {
             Storage::put('.config/fssh/config.json', json_encode([
-                'token' => '',
             ]));
         }
     }
