@@ -37,7 +37,7 @@ To be able to interact with one or more Laravel Forge account(s), Forge SSH Assi
 To create a token you'll need to head into your account settings on Laravel Forge and choose **API** in the menu.
 
 Here you should create a new token, you can name it whatever you want but we recommend that you name it 
-`Forge SSH Assisntant <computer-name>` where you replace the `<computer-name>` with the actual name of your computer, 
+`Forge SSH Assistant <computer-name>` where you replace the `<computer-name>` with the actual name of your computer, 
 such as `Office` or `MacBook Pro`
 
 An overlay will open with the actual token, which you should copy. Make sure that you copy everything.
