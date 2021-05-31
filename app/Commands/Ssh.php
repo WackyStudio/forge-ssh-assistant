@@ -67,9 +67,11 @@ class Ssh extends Command
         $menu = $this->menu('Forge SSH Assistant by Wacky Studio ')
             ->setTitleSeparator('_')
             ->setBackgroundColour('black')
-            ->setForegroundColour('white')
-            ->setUnselectedMarker('   ')
-            ->setSelectedMarker('➡  ');
+
+            ->setForegroundColour('white');
+            //->setUnselectedMarker('   ')
+            //->setSelectedMarker('➡  ');
+
 
         foreach ($this->servers as $name => $servers) {
             if ($name !== array_key_first($this->servers)) {
@@ -131,9 +133,8 @@ class Ssh extends Command
     public function runSSH($ip): void
     {
         $connectTo = Arr::collapse($this->servers)[$ip];
-
         $this->info("Setting up SSH connection to {$connectTo}");
-        $process = new Process("ssh forge@{$ip}");
+        $process = new Process(["ssh", "forge@{$ip}"]);
         $process->setTty(Process::isTtySupported());
         $process->setTimeout(null);
         $process->setIdleTimeout(null);
