@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Themsaid\Forge\Resources\Server;
+use Laravel\Forge\Resources\Server;
 
 class Forge
 {
@@ -21,7 +21,7 @@ class Forge
      */
     public function fetchServers($token)
     {
-        $forge = new \Themsaid\Forge\Forge($token);
+        $forge = new \Laravel\Forge\Forge($token);
         $this->servers = $forge->servers();
     }
 

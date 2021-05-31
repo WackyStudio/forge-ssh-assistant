@@ -20,7 +20,7 @@
         "laravel-zero/framework": "^8.8",
         "nunomaduro/laravel-console-menu": "^3.2.0",
         "symfony/process": "^5.1",
-        "themsaid/forge-sdk": "^3.6.0"
+        "laravel/forge-sdk": "^3.6.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.3",
