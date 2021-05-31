@@ -13,7 +13,7 @@ class RemoveForgeToken extends Command
      *
      * @var string
      */
-    protected $signature = 'token:remove';
+    protected $signature = 'token:remove {name}';
 
     /**
      * The description of the command.
@@ -40,7 +40,14 @@ class RemoveForgeToken extends Command
      */
     public function handle()
     {
-        $this->tokenHandler->removeToken();
+        $name = $this->argument('name');
+
+        if (empty($name)) {
+            $this->error('ERROR: No name given for the token to remove');
+            exit(1);
+        }
+
+        $this->tokenHandler->removeToken($name);
         $this->info('The token has been removed');
     }
 
